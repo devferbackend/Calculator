@@ -224,5 +224,36 @@ clearButton.addEventListener("click", () => {
   updateDisplay();
 });
 
+// --- Event listener: botón decimal (.) ---
+
+const decimalButton = document.querySelector('[data-action="decimal"]');
+
+decimalButton.addEventListener("click", () => {
+  // Si hay error, resetear y empezar con "0."
+  if (hasError()) {
+    firstNumber = null;
+    operator = null;
+    displayExpression.textContent = "";
+    currentInput = "0.";
+    waitingForSecondOperand = false;
+    updateDisplay();
+    return;
+  }
+
+  // Si acabamos de presionar un operador o "=", empezar con "0."
+  if (waitingForSecondOperand) {
+    currentInput = "0.";
+    waitingForSecondOperand = false;
+    updateDisplay();
+    return;
+  }
+
+  // No agregar si ya hay un punto decimal
+  if (currentInput.includes(".")) return;
+
+  currentInput += ".";
+  updateDisplay();
+});
+
 // --- Inicializar display ---
 updateDisplay();
