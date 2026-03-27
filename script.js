@@ -13,7 +13,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-  if (b === 0) return "Error";
+  if (b === 0) return "¡No, bro!";
   return a / b;
 }
 
@@ -52,6 +52,28 @@ const displayExpression = document.querySelector(".display-expression");
 
 function updateDisplay() {
   displayCurrent.textContent = currentInput;
+
+  // Estilo visual cuando hay error
+  if (hasError()) {
+    displayCurrent.style.color = "#e94560";
+    displayCurrent.style.fontSize = "1.6rem";
+  } else {
+    displayCurrent.style.color = "";
+    displayCurrent.style.fontSize = "";
+  }
+}
+
+// --- Helper: redondear resultados con decimales largos ---
+
+function roundResult(value) {
+  if (typeof value === "string") return value; // "¡No, bro!" u otro error
+  return Math.round(value * 100000000) / 100000000;
+}
+
+// --- Helper: verificar si el display tiene un error ---
+
+function hasError() {
+  return isNaN(parseFloat(currentInput));
 }
 
 // --- Event listeners: botones de dígitos ---
@@ -64,7 +86,18 @@ digitButtons.forEach((btn) => {
     // Si no es un dígito (ej: el botón "."), ignorar por ahora
     if (digit === undefined) return;
 
-    // Si acabamos de presionar un operador, empezar número nuevo
+    // Si hay error en pantalla, resetear todo al presionar un dígito
+    if (hasError()) {
+      firstNumber = null;
+      operator = null;
+      displayExpression.textContent = "";
+      currentInput = digit;
+      waitingForSecondOperand = false;
+      updateDisplay();
+      return;
+    }
+
+    // Si acabamos de presionar un operador o "=", empezar número nuevo
     if (waitingForSecondOperand) {
       currentInput = digit;
       waitingForSecondOperand = false;
@@ -101,6 +134,18 @@ operatorButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const selectedOperator = btn.dataset.operator;
 
+    // Si hay error, ignorar operadores
+    if (hasError()) return;
+
+    // Si ya estamos esperando el segundo número (operadores consecutivos),
+    // solo cambiar el operador, NO evaluar.
+    if (waitingForSecondOperand && operator !== null) {
+      operator = selectedOperator;
+      displayExpression.textContent =
+        `${firstNumber} ${getOperatorSymbol(operator)}`;
+      return;
+    }
+
     // Si hay una operación pendiente Y ya se ingresó un segundo número,
     // evaluar primero y usar el resultado como nuevo firstNumber.
     // Ej: 12 + 7 → usuario presiona "-" → evalúa 12+7=19, luego 19 -
@@ -108,13 +153,20 @@ operatorButtons.forEach((btn) => {
       const secondNumber = parseFloat(currentInput);
       const result = operate(operator, firstNumber, secondNumber);
 
-      // Mostrar la expresión evaluada arriba
-      displayExpression.textContent =
-        `${firstNumber} ${getOperatorSymbol(operator)} ${secondNumber} =`;
+      // Si el resultado es un error (ej: división por cero), mostrarlo
+      if (typeof result === "string") {
+        currentInput = result;
+        updateDisplay();
+        displayExpression.textContent = "";
+        firstNumber = null;
+        operator = null;
+        return;
+      }
 
-      currentInput = String(result);
+      const rounded = roundResult(result);
+      currentInput = String(rounded);
       updateDisplay();
-      firstNumber = result;
+      firstNumber = rounded;
     } else {
       // No hay operación pendiente, simplemente guardar el primer número
       firstNumber = parseFloat(currentInput);
@@ -138,6 +190,8 @@ equalsButton.addEventListener("click", () => {
   if (firstNumber === null || operator === null) return;
   // No evaluar si aún esperamos el segundo número
   if (waitingForSecondOperand) return;
+  // No operar si hay error
+  if (hasError()) return;
 
   const secondNumber = parseFloat(currentInput);
   const result = operate(operator, firstNumber, secondNumber);
@@ -146,8 +200,9 @@ equalsButton.addEventListener("click", () => {
   displayExpression.textContent =
     `${firstNumber} ${getOperatorSymbol(operator)} ${secondNumber} =`;
 
-  // Mostrar el resultado
-  currentInput = String(result);
+  // Mostrar el resultado (redondeado si es numérico)
+  const rounded = roundResult(result);
+  currentInput = String(rounded);
   updateDisplay();
 
   // Resetear para la siguiente operación
