@@ -101,16 +101,31 @@ operatorButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
     const selectedOperator = btn.dataset.operator;
 
-    // Guardar el primer número y el operador
-    firstNumber = parseFloat(currentInput);
+    // Si hay una operación pendiente Y ya se ingresó un segundo número,
+    // evaluar primero y usar el resultado como nuevo firstNumber.
+    // Ej: 12 + 7 → usuario presiona "-" → evalúa 12+7=19, luego 19 -
+    if (firstNumber !== null && operator !== null && !waitingForSecondOperand) {
+      const secondNumber = parseFloat(currentInput);
+      const result = operate(operator, firstNumber, secondNumber);
+
+      // Mostrar la expresión evaluada arriba
+      displayExpression.textContent =
+        `${firstNumber} ${getOperatorSymbol(operator)} ${secondNumber} =`;
+
+      currentInput = String(result);
+      updateDisplay();
+      firstNumber = result;
+    } else {
+      // No hay operación pendiente, simplemente guardar el primer número
+      firstNumber = parseFloat(currentInput);
+    }
+
     operator = selectedOperator;
     waitingForSecondOperand = true;
 
-    // Mostrar la expresión en la línea superior
+    // Actualizar la expresión con el nuevo operador
     displayExpression.textContent =
       `${firstNumber} ${getOperatorSymbol(operator)}`;
-
-    updateDisplay();
   });
 });
 
