@@ -274,5 +274,60 @@ backspaceButton.addEventListener("click", () => {
   updateDisplay();
 });
 
+// --- Soporte de teclado ---
+
+document.addEventListener("keydown", (e) => {
+  const key = e.key;
+
+  // Dígitos 0-9
+  if (key >= "0" && key <= "9") {
+    const btn = document.querySelector(`.btn-digit[data-digit="${key}"]`);
+    if (btn) btn.click();
+    return;
+  }
+
+  // Operadores
+  const operatorMap = {
+    "+": "+",
+    "-": "-",
+    "*": "*",
+    "/": "/",
+  };
+
+  if (key in operatorMap) {
+    e.preventDefault(); // Evitar "/" abriendo búsqueda en algunos navegadores
+    const btn = document.querySelector(
+      `.btn-operator[data-operator="${operatorMap[key]}"]`
+    );
+    if (btn) btn.click();
+    return;
+  }
+
+  // Igual: Enter o =
+  if (key === "Enter" || key === "=") {
+    e.preventDefault();
+    equalsButton.click();
+    return;
+  }
+
+  // Punto decimal
+  if (key === ".") {
+    decimalButton.click();
+    return;
+  }
+
+  // Retroceso
+  if (key === "Backspace") {
+    backspaceButton.click();
+    return;
+  }
+
+  // Borrar todo: Escape o Delete
+  if (key === "Escape" || key === "Delete") {
+    clearButton.click();
+    return;
+  }
+});
+
 // --- Inicializar display ---
 updateDisplay();
