@@ -211,5 +211,18 @@ equalsButton.addEventListener("click", () => {
   waitingForSecondOperand = true;
 });
 
+// --- Event listener: botón borrar (AC) ---
+
+const clearButton = document.querySelector('[data-action="clear"]');
+
+clearButton.addEventListener("click", () => {
+  firstNumber = null;
+  operator = null;
+  currentInput = "0";
+  waitingForSecondOperand = false;
+  displayExpression.textContent = "";
+  updateDisplay();
+});
+
 // --- Inicializar display ---
 updateDisplay();
