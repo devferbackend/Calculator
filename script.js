@@ -255,5 +255,24 @@ decimalButton.addEventListener("click", () => {
   updateDisplay();
 });
 
+// --- Event listener: botón retroceso (←) ---
+
+const backspaceButton = document.querySelector('[data-action="backspace"]');
+
+backspaceButton.addEventListener("click", () => {
+  // No hacer nada si hay error o si estamos esperando nuevo input
+  if (hasError() || waitingForSecondOperand) return;
+
+  // Quitar el último carácter
+  currentInput = currentInput.slice(0, -1);
+
+  // Si queda vacío, mostrar "0"
+  if (currentInput === "" || currentInput === "-") {
+    currentInput = "0";
+  }
+
+  updateDisplay();
+});
+
 // --- Inicializar display ---
 updateDisplay();
