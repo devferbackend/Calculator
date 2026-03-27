@@ -1,0 +1,159 @@
+/* === Reset & Variables === */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-body: #1a1a2e;
+  --bg-calc: #16213e;
+  --bg-display: #0f3460;
+  --bg-btn: #1a1a40;
+  --bg-btn-hover: #252550;
+  --bg-action: #e94560;
+  --bg-action-hover: #ff6b81;
+  --bg-operator: #0f3460;
+  --bg-operator-hover: #1a4a7a;
+  --bg-equals: #e94560;
+  --bg-equals-hover: #ff6b81;
+  --text-primary: #eaeaea;
+  --text-secondary: #a8a8b3;
+  --text-display: #ffffff;
+  --shadow-calc: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --shadow-btn: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --radius-calc: 20px;
+  --radius-btn: 12px;
+}
+
+/* === Layout === */
+
+body {
+  font-family: "Outfit", sans-serif;
+  background: var(--bg-body);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator {
+  background: var(--bg-calc);
+  border-radius: var(--radius-calc);
+  box-shadow: var(--shadow-calc);
+  padding: 24px;
+  width: 340px;
+}
+
+/* === Display === */
+
+.display {
+  background: var(--bg-display);
+  border-radius: var(--radius-btn);
+  padding: 20px 24px;
+  margin-bottom: 20px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.display-expression {
+  font-family: "DM Mono", monospace;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  min-height: 1.2em;
+  word-break: break-all;
+}
+
+.display-current {
+  font-family: "DM Mono", monospace;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: var(--text-display);
+  line-height: 1;
+  word-break: break-all;
+}
+
+/* === Grid de botones === */
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* === Botones base === */
+
+.btn {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  background: var(--bg-btn);
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 18px 0;
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background: var(--bg-btn-hover);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* === Botones de acción (AC, ←) === */
+
+.btn-action {
+  background: var(--bg-action);
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-action:hover {
+  background: var(--bg-action-hover);
+}
+
+/* === Botones de operador (+, −, ×, ÷) === */
+
+.btn-operator {
+  background: var(--bg-operator);
+  color: #53b9f5;
+  font-weight: 600;
+  font-size: 1.35rem;
+}
+
+.btn-operator:hover {
+  background: var(--bg-operator-hover);
+}
+
+/* === Botón igual (=) === */
+
+.btn-equals {
+  background: var(--bg-equals);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.35rem;
+}
+
+.btn-equals:hover {
+  background: var(--bg-equals-hover);
+}
+
+/* === Botón 0 ocupa 2 columnas === */
+
+.btn-zero {
+  grid-column: span 2;
+}

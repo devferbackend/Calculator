@@ -4,10 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora</title>
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Calculadora — Etapa 1</h1>
-  <p>Abre la consola del navegador (F12) para ver las pruebas.</p>
+    <div class="calculator">
+    <!-- Display -->
+    <div class="display">
+      <div class="display-expression">12 + 7</div>
+      <div class="display-current">19</div>
+    </div>
+ 
+    <!-- Botones -->
+    <div class="buttons">
+      <!-- Fila 1: AC, ←, ÷ -->
+      <button class="btn btn-action" data-action="clear">AC</button>
+      <button class="btn btn-action" data-action="backspace">←</button>
+      <button class="btn btn-operator" data-operator="/">÷</button>
+ 
+      <!-- Fila 2: 7, 8, 9, × -->
+      <button class="btn btn-digit" data-digit="7">7</button>
+      <button class="btn btn-digit" data-digit="8">8</button>
+      <button class="btn btn-digit" data-digit="9">9</button>
+      <button class="btn btn-operator" data-operator="*">×</button>
+ 
+      <!-- Fila 3: 4, 5, 6, − -->
+      <button class="btn btn-digit" data-digit="4">4</button>
+      <button class="btn btn-digit" data-digit="5">5</button>
+      <button class="btn btn-digit" data-digit="6">6</button>
+      <button class="btn btn-operator" data-operator="-">−</button>
+ 
+      <!-- Fila 4: 1, 2, 3, + -->
+      <button class="btn btn-digit" data-digit="1">1</button>
+      <button class="btn btn-digit" data-digit="2">2</button>
+      <button class="btn btn-digit" data-digit="3">3</button>
+      <button class="btn btn-operator" data-operator="+">+</button>
+ 
+      <!-- Fila 5: 0, ., = -->
+      <button class="btn btn-digit btn-zero" data-digit="0">0</button>
+      <button class="btn btn-digit" data-action="decimal">.</button>
+      <button class="btn btn-equals" data-action="equals">=</button>
+    </div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
