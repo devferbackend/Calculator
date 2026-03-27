@@ -36,17 +36,46 @@ function operate(operator, a, b) {
   }
 }
 
-// --- Pruebas en consola ---
-console.log("=== Pruebas de funciones ===");
-console.log("add(3, 5):", add(3, 5));             // 8
-console.log("subtract(10, 4):", subtract(10, 4));  // 6
-console.log("multiply(3, 7):", multiply(3, 7));    // 21
-console.log("divide(10, 2):", divide(10, 2));      // 5
-console.log("divide(5, 0):", divide(5, 0));        // Error
+// --- Estado de la calculadora ---
 
-console.log("\n=== Pruebas de operate ===");
-console.log('operate("+", 12, 7):', operate("+", 12, 7));   // 19
-console.log('operate("-", 19, 1):', operate("-", 19, 1));    // 18
-console.log('operate("*", 4, 6):', operate("*", 4, 6));     // 24
-console.log('operate("/", 20, 5):', operate("/", 20, 5));    // 4
-console.log('operate("/", 8, 0):', operate("/", 8, 0));      // Error
+let firstNumber = null;
+let operator = null;
+let currentInput = "0";
+
+// --- Referencias al DOM ---
+
+const displayCurrent = document.querySelector(".display-current");
+const displayExpression = document.querySelector(".display-expression");
+
+// --- Función para actualizar el display ---
+
+function updateDisplay() {
+  displayCurrent.textContent = currentInput;
+}
+
+// --- Event listeners: botones de dígitos ---
+
+const digitButtons = document.querySelectorAll(".btn-digit");
+
+digitButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const digit = btn.dataset.digit;
+    // Si no es un dígito (ej: el botón "."), ignorar por ahora
+    if (digit === undefined) return;
+
+    // Evitar múltiples ceros al inicio (ej: "007")
+    if (currentInput === "0" && digit === "0") return;
+
+    // Si el display muestra "0", reemplazar; si no, concatenar
+    if (currentInput === "0") {
+      currentInput = digit;
+    } else {
+      currentInput += digit;
+    }
+
+    updateDisplay();
+  });
+});
+
+// --- Inicializar display ---
+updateDisplay();
